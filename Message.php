@@ -217,9 +217,12 @@ class Message extends BaseMessage
         $string = '';
         foreach ($this->getSendGridMessage()->toWebFormat() as $key => $value) {
             if( !is_object($value) || (is_object($value) && method_exists( $value , 'toString' ))){
+                if(is_array($value))
+                  $value = json_encode($value);//added by jinujosephdaniel@gmail.com for handling ccs and bccs
+
                 $string .= sprintf("%s:%s\n", $key, $value);
             }
         }
         return $string;
     }
-} 
+}
